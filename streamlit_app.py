@@ -16,25 +16,26 @@ thinking_messages = [
     "Sending return offers.."
 ]
 
-# Initialize session state for chat messages if not already set
-if "interview_game_messages" not in st.session_state:
-    st.session_state.interview_game_messages = []
+# Additional title with a smaller "Beta" tag
+home_title = "Interview Game"  # Replace with the actual title you want to use
 
-# Display a unique title and description for the Interview Game
-st.title("🏆 Interview Game - Challenge Yourself with Alex")
+st.markdown(
+    f"""<h1 style='display: inline;'>{home_title} <span style='color:#2E9BF5; font-size: 0.6em;'>Beta</span></h1>""",
+    unsafe_allow_html=True
+)
+
 st.markdown(
     """
-    Welcome to the Interview Game! This is a competitive interview experience where you compete against Alex to answer
-    finance and investment banking questions under simulated high-stakes conditions. See how you stack up and learn as you go.
+    Welcome to the Interview Game! This is a competitive interview experience where you go head to head with Alex to answer
+    investment banking interview questions under simulated high-stakes conditions. See how you stack up and learn as you go.
     
-    - 💬 Chris will ask questions, provide feedback, and decide the winner for each question.
-    - 🧩 Try to answer as you would in a real interview
-    - 📈 Track your progress as you improve your responses.
+    - 💬 Answer each question as you would in a real interview.
+    - 🏆 A winner will be decided for every round. Feedback will be provided.
+    - 📈 Track your progress and improve your responses. Practice makes perfect.
     
     Let's begin!
     """
 )
-
 # Set a unique welcome message for the Interview Game
 if not st.session_state.interview_game_messages:
     st.session_state.interview_game_messages.append({
