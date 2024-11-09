@@ -1,56 +1,97 @@
 import streamlit as st
-from openai import OpenAI
+import requests
+import random
+import time
 
-# Show title and description.
-st.title("💬 Chatbot")
-st.write(
-    "This is a simple chatbot that uses OpenAI's GPT-3.5 model to generate responses. "
-    "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
-    "You can also learn how to build this app step by step by [following our tutorial](https://docs.streamlit.io/develop/tutorials/llms/build-conversational-apps)."
+# Define the API URL specifically for the Interview Game model
+API_URL_INTERVIEW_GAME = "https://flowise-9kx9.onrender.com/api/v1/prediction/cbf21cc5-8823-46a5-af90-66fca1c9ee32"
+
+# List of randomized "thinking" messages
+thinking_messages = [
+    "Alex is Crunching the numbers…",
+    "Running a DCF… please hold for a valuation.",
+    "Checking with the M&A team… Alex will be right back.",
+    "Consulting the deal book…",
+    "Reviewing the pitch deck… insights coming soon.",
+    "Adjusting the financial model…",
+    "Running a few more Monte Carlo simulations… hang tight!",
+    "Preparing a high-stakes IPO answer… patience pays dividends.",
+    "Just a moment… Alex is cutting through red tape.",
+    "The market's in flux… recalibrating!"
+]
+
+# Initialize session state for chat messages if not already set
+if "interview_game_messages" not in st.session_state:
+    st.session_state.interview_game_messages = []
+
+# Display a unique title and description for the Interview Game
+st.title("🏆 Interview Game - Challenge Yourself with Alex")
+st.markdown(
+    """
+    Welcome to the Interview Game! This is a competitive, simulated interview experience where Alex challenges you to answer
+    finance and investment banking questions under simulated high-stakes conditions. See how you perform and learn as you go.
+    
+    - 💬 Alex will ask questions and provide feedback.
+    - 🧩 Try to answer as accurately and quickly as possible.
+    - 📈 Track your progress as you improve your responses.
+    
+    Let's begin!
+    """
 )
 
-# Ask user for their OpenAI API key via `st.text_input`.
-# Alternatively, you can store the API key in `./.streamlit/secrets.toml` and access it
-# via `st.secrets`, see https://docs.streamlit.io/develop/concepts/connections/secrets-management
-openai_api_key = st.text_input("OpenAI API Key", type="password")
-if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.", icon="🗝️")
-else:
+# Set a unique welcome message for the Interview Game
+if not st.session_state.interview_game_messages:
+    st.session_state.interview_game_messages.append({
+        "role": "assistant", 
+        "content": "Welcome to the interview game! I am Chris, your host. Ready to see how you stack up in a simulated interview against Alex?"
+    })
 
-    # Create an OpenAI client.
-    client = OpenAI(api_key=openai_api_key)
+# Function to query the Interview Game API
+def query_interview_game(context, prompt):
+    payload = {"question": f"{context}\n\nUser Question: {prompt}"}
 
-    # Create a session state variable to store the chat messages. This ensures that the
-    # messages persist across reruns.
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+    #Debugging output to check the payload before sending
+    #st.write("Sending payload:", payload)
 
-    # Display the existing chat messages via `st.chat_message`.
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    response = requests.post(API_URL_INTERVIEW_GAME, json=payload)
+    if response.status_code == 200:
+        return response.json().get("text", "Error: No response text")
+    else:
+        return f"Error: {response.status_code}"
 
-    # Create a chat input field to allow the user to enter a message. This will display
-    # automatically at the bottom of the page.
-    if prompt := st.chat_input("What is up?"):
+# Display the chat history for the Interview Game
+for message in st.session_state.interview_game_messages:
+    role = message["role"]
+    avatar_url = "https://github.com/Reese0301/GIS-AI-Agent/blob/main/JackIcon.png?raw=true" if role == "assistant" else "https://github.com/Reese0301/GIS-AI-Agent/blob/main/FoxUser.png?raw=true"
+    
+    with st.chat_message(role, avatar=avatar_url):
+        st.markdown(message["content"])
 
-        # Store and display the current prompt.
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
+# Handle user input
+if prompt := st.chat_input("Answer here..."):
+    # Add user's question to chat history
+    st.session_state.interview_game_messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user", avatar="https://github.com/Reese0301/GIS-AI-Agent/blob/main/FoxUser.png?raw=true"):
+        st.markdown(prompt)
 
-        # Generate a response using the OpenAI API.
-        stream = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        )
+    # Show thinking message while awaiting response
+    thinking_message = random.choice(thinking_messages)
+    thinking_placeholder = st.empty()
+    thinking_placeholder.markdown(f"💭 **{thinking_message}**")
 
-        # Stream the response to the chat using `st.write_stream`, then store it in 
-        # session state.
-        with st.chat_message("assistant"):
-            response = st.write_stream(stream)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+    # Prepare context by limiting to the last few messages
+    CONTEXT_LIMIT = 5
+    context = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in st.session_state.interview_game_messages[-CONTEXT_LIMIT:]])
+
+    # Query the Interview Game API
+    start_time = time.time()
+    response_content = query_interview_game(context, prompt)
+    response_time = time.time() - start_time
+    thinking_placeholder.empty()
+
+    # Display Alex's response
+    with st.chat_message("assistant", avatar="https://github.com/Reese0301/GIS-AI-Agent/blob/main/JackIcon.png?raw=true"):
+        st.markdown(f"💭 Thought for {response_time:.2f} seconds\n\n{response_content}")
+
+    # Add Alex's response to chat history
+    st.session_state.interview_game_messages.append({"role": "assistant", "content": response_content})
