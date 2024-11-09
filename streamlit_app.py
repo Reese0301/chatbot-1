@@ -9,15 +9,11 @@ API_URL_INTERVIEW_GAME = "https://flowise-9kx9.onrender.com/api/v1/prediction/cb
 # List of randomized "thinking" messages
 thinking_messages = [
     "Alex is Crunching the numbers…",
-    "Running a DCF… please hold for a valuation.",
-    "Checking with the M&A team… Alex will be right back.",
-    "Consulting the deal book…",
-    "Reviewing the pitch deck… insights coming soon.",
-    "Adjusting the financial model…",
-    "Running a few more Monte Carlo simulations… hang tight!",
-    "Preparing a high-stakes IPO answer… patience pays dividends.",
-    "Just a moment… Alex is cutting through red tape.",
-    "The market's in flux… recalibrating!"
+    "Alex: Try but you won't win.",
+    "Evaluating responses, will you stand out?",
+    "Checking with the HR team…",
+    "The competition's heating up… recalculating strategies!",
+    "Sending return offers.."
 ]
 
 # Initialize session state for chat messages if not already set
