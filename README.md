@@ -1,19 +1,7 @@
-# 💬 Chatbot template
+# 🏆 Interview Game - Challenge Yourself with Alex
 
-A simple Streamlit app that shows how to build a chatbot using OpenAI's GPT-3.5.
+Welcome to the Interview Game! This is a competitive, simulated interview experience where Alex challenges you to answer finance and investment banking questions under simulated high-stakes conditions. See how you perform and learn as you go.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://chatbot-template.streamlit.app/)
-
-### How to run it on your own machine
-
-1. Install the requirements
-
-   ```
-   $ pip install -r requirements.txt
-   ```
-
-2. Run the app
-
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+💬 Alex will ask questions and provide feedback.
+🧩 Try to answer as accurately and quickly as possible.
+📈 Track your progress as you improve your responses.
