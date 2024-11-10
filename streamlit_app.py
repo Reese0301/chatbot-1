@@ -55,7 +55,7 @@ with st.sidebar:
         "Behavioral": st.checkbox("Behavioral", value=True),
         "Technical": st.checkbox("Technical", value=True),
         "Fit": st.checkbox("Fit", value=True),
-        "Resume": st.checkbox("Resume (In Progress, may experience memory related issues.")
+        "Resume": st.checkbox("Resume (In Progress, may experience memory related issues.)")
     }
     
     # Resume text area and button for storing resume content
@@ -92,7 +92,7 @@ def query_interview_game(context, prompt, question_types):
     }
 
     #Debugging output to check the payload before sending
-    st.write("Sending payload:", payload)
+    #st.write("Sending payload:", payload)
 
     # Send request to API and get the response
     response = requests.post(API_URL_INTERVIEW_GAME, json=payload)
@@ -121,7 +121,7 @@ if prompt := st.chat_input("Answer here..."):
     thinking_placeholder.markdown(f"💭 **{thinking_message}**")
 
     # Prepare context by limiting to the last few messages
-    CONTEXT_LIMIT = 10
+    CONTEXT_LIMIT = 6
     context = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in st.session_state.interview_game_messages[-CONTEXT_LIMIT:]])
 
     # Query the Interview Game API
