@@ -121,7 +121,7 @@ if prompt := st.chat_input("Answer here..."):
     thinking_placeholder.markdown(f"💭 **{thinking_message}**")
 
     # Prepare context by limiting to the last few messages
-    CONTEXT_LIMIT = 5
+    CONTEXT_LIMIT = 10
     context = "\n".join([f"{msg['role'].capitalize()}: {msg['content']}" for msg in st.session_state.interview_game_messages[-CONTEXT_LIMIT:]])
 
     # Query the Interview Game API
