@@ -16,6 +16,10 @@ thinking_messages = [
     "Sending return offers.."
 ]
 
+# Initialize session state for chat messages if not already set
+if "interview_game_messages" not in st.session_state:
+    st.session_state.interview_game_messages = []
+    
 # Additional title with a smaller "Beta" tag
 home_title = "Interview Game"  # Replace with the actual title you want to use
 
