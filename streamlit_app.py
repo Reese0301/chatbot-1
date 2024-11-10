@@ -92,7 +92,7 @@ def query_interview_game(context, prompt, question_types):
     }
 
     #Debugging output to check the payload before sending
-    #st.write("Sending payload:", payload)
+    st.write("Sending payload:", payload)
 
     # Send request to API and get the response
     response = requests.post(API_URL_INTERVIEW_GAME, json=payload)
