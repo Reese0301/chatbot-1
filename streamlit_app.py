@@ -55,7 +55,7 @@ with st.sidebar:
         "Behavioral": st.checkbox("Behavioral", value=True),
         "Technical": st.checkbox("Technical", value=True),
         "Fit": st.checkbox("Fit", value=True),
-        "Resume": st.checkbox("Resume")
+        "Resume": st.checkbox("Resume (In Progress, may experience memory related issues.")
     }
     
     # Resume text area and button for storing resume content
