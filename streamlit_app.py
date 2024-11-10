@@ -30,6 +30,7 @@ st.markdown(
 
 st.markdown(
     """
+    ---
     Welcome to the Interview Game! This is a competitive interview experience where you go head to head with Alex to answer
     investment banking interview questions under simulated high-stakes conditions. See how you stack up and learn as you go.
     
